@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plr.dao.IPhotonameDAO">
+	<insert id="insertPhotoname">
+		insert ignore into ${table_name} (photo_name) values(#{photoname})
+	</insert>
+	<select id="search_photo" resultType="String">
+		select photo_name from ${table_name} where photo_id>(select floor(rand()*(
+			select max(photo_id) from ${table_name}))) limit 1;
+	</select>
+</mapper>
