@@ -6,6 +6,8 @@
 		<title>sto_PLR_orz</title>
 	</head>
 	<body id="body">
+		<p>Example:D:/tmp/mycifar10_data/Train/tiger/full/1.jpg</p></br>
+		输入图片路径：<input type="text" id="input" value="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg" size="70"/></br>
 		<button type="button" onclick="button_getlabel()">Getlabel!</button>
 		<button type="button" onclick="button_getphoto()">Getphoto!</button>
 	</body>
@@ -13,6 +15,7 @@
 		var photo_path="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg"
 		function button_getlabel(){
 			alert("fuck you!");
+			var photo_path=$("#input").val()
 			$.ajax({
 				url:"http://localhost:8080/PLR/plr_getlabel.plr",
 				dataType:"json",
