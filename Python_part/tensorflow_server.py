@@ -2,6 +2,8 @@
 import threading
 import socket
 
+from MyCNN import plr
+
 #def test(str):
 #	print("thread %s is running...%s"%(threading.current_thread().name,str))
 #	time.sleep(2)
@@ -21,13 +23,15 @@ def tcplink(client_sock,client_addr):
 	print('Accept new connection from %s:%s...' % client_addr)
 	photo_path=(client_sock.recv(256)).decode('utf-8')
 	print("client:%s"%photo_path)
+	label=plr.input_photo(photo_path)
 	#调用 Tensorflow...
-	label="book"
+	#label="book"
 	client_sock.send(label.encode('utf-8'))
 	client_sock.close()
 	print('Connection from %s:%s closed.' % client_addr)
 
 if __name__=='__main__':
+	plr.init_tensorflow()			#初始化Tensorflow
 	server_sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	server_sock.bind((bind_ip,bind_port))
 	server_sock.listen(10)
