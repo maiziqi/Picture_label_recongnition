@@ -9,13 +9,14 @@ soup = spider.get_soup(root_url)
 tree_id = spider.get_tree_id(soup)
 c_id = spider.get_c_id(soup)
 
-for c_item in c_id[9:11]:
+for c_item in c_id[6:7]:
     # 使用tree_id、c_id设置获取类别对应链接的url
     format_url = 'https://category.vip.com/ajax/getTreeList.php?cid={}&tree_id={}'.format(c_item, tree_id)
     url_soup = spider.get_soup(format_url)
     name_dic = spider.get_name_dic(url_soup)
     url_dic = spider.get_url_dic(url_soup, name_dic)
     for folder, url in url_dic.items():
+        folder = spider.folder_name_simplify(folder)
         product_list = spider.get_product_list(url)
         # 由于唯品会网站限制，先取前五十个进行存取
         download.down_img(folder, product_list[:50])

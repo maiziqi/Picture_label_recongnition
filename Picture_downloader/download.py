@@ -7,7 +7,10 @@ def save_img(folder, img_list):
     """根据图片链接使用urllib将图片进行下载保存"""
     for img_item in img_list:
         img_save = folder + '/' + img_item.split('/')[-1]
-        urllib.request.urlretrieve(img_item.replace('\\', ''), img_save)
+        try:
+            urllib.request.urlretrieve(img_item.replace('\\', ''), img_save)
+        except urllib.error.HTTPError:
+            print(img_item.replace('\\', '') + '下载错误')
 
 
 def down_img(folder, product_list):
