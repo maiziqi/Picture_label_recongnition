@@ -6,9 +6,10 @@
 		<title>sto_PLR_orz</title>
 	</head>
 	<body id="body">
-		<p>Example:D:/tmp/mycifar10_data/Train/tiger/full/1.jpg</p></br>
-		输入图片路径：<input type="text" id="input" value="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg" size="70"/></br>
+		<!-- <p>Example:D:/tmp/mycifar10_data/Train/tiger/full/1.jpg</p></br>
+		输入图片路径：<input type="text" id="input" value="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg" size="70"/></br> -->
 		<!--  <button type="button" onclick="button_getlabel()">Getlabel!</button> -->
+		
 		<button type="button" onclick="button_getphoto()">Getphoto!</button>
 		
 		<form id="photo_form" action="/" method="post" entype="multipart/form-data">		<!-- <form>标签要添加enctype="multipart/form-data"属性。 -->
@@ -18,7 +19,7 @@
 		
 	</body>
 	<script>
-		var photo_path="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg"
+		/* var photo_path="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg"
 		function button_getlabel(){
 			//alert("fuck you!"); 
 			var photo_path=$("#input").val()
@@ -34,7 +35,7 @@
                     alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
                 }
 			});
-		}
+		} */
 		function button_getphoto(){
 			//alert("ffffuuuucccckkkk    yyyyoooouuuu!!!!");
 			$.ajax({
@@ -69,7 +70,10 @@
 				contentType:false,  	<!-- contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。 -->
 				dataType:"json",
 				success:function (result) {
-			    	if(result.upload_success)alert("upload Success");
+			    	if(result.upload_success){
+			    		alert("upload Success"+request.labelname);
+			    	}
+			    	}
 			    	else alert("upload Fail");
 				},  
 				error:function(XMLHttpRequest, textStatus, errorThrown) {
