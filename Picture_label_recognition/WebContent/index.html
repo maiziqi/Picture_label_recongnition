@@ -14,7 +14,8 @@
 		
 		<form id="photo_form" action="/" method="post" entype="multipart/form-data">		<!-- <form>标签要添加enctype="multipart/form-data"属性。 -->
 			chose the photo：<input id="photo_id" type="file" name="photo_name">
-			<button id="photo_button_id" type="button" onclick="button_uploadphoto()" >Upload</button>
+			
+			<button type="button" onclick="button_uploadphoto()">Upload!</button>
 		</form>
 		
 	</body>
@@ -59,8 +60,9 @@
                 }
 			});
 		}
+		
 		function button_uploadphoto(){
-			//alert("fuckkkkk")
+			alert("fuckkkkk");
 			$.ajax({  
 				url:"http://localhost:8080/PLR/plr_uploadphoto.plr",  
 				type:'POST',  
@@ -71,8 +73,7 @@
 				dataType:"json",
 				success:function (result) {
 			    	if(result.upload_success){
-			    		alert("upload Success"+request.labelname);
-			    	}
+			    		alert("upload Success"+result.labelname);
 			    	}
 			    	else alert("upload Fail");
 				},  

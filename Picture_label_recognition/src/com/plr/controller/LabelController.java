@@ -78,7 +78,7 @@ public class LabelController {
 		}
 	}
 	
-	@RequestMapping(value="/plr_uploadphoto",method=RequestMethod.POST)
+	@RequestMapping(value="/plr_uploadphoto",method=RequestMethod.POST, produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String plr_uploadphoto(@RequestParam(value="photo_name")MultipartFile photofile) {
 		//System.out.println("666");

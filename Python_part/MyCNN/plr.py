@@ -11,16 +11,17 @@ tf.app.flags.DEFINE_string('checkpoint_dir', 'D:/tmp/mycifar10_train',
 
 global mygraph,mysession,images_batch,logits,predictions,label_list			
 def init_tensorflow():
-	global mygraph,mysession,images_batch,logits,predictions,label_list
+	global mygraph,mysession,images_batch,logits,predictions,label_list,keep_prob
 	label_list=mycifar10.setBATCH_SIZE_and_NUM_CLASSES_and_get_label_list()
 	mygraph=tf.Graph()
 	with mygraph.as_default():
 		images_batch=tf.placeholder(tf.float32,shape=[1,FLAGS.photo_resize,FLAGS.photo_resize,3])
-		logits=mycifar10.inference(images_batch)
+		keep_prob=tf.placeholder(tf.float32)
+		logits=mycifar10.inference(images_batch,keep_prob)
 		predictions=tf.argmax(logits,1)             #tf.argmax取最大值，1 则 第一维度
-		variable_averages = tf.train.ExponentialMovingAverage(mycifar10.MOVING_AVERAGE_DECAY)
-		variables_to_restore = variable_averages.variables_to_restore()
-		saver = tf.train.Saver(variables_to_restore)
+		# variable_averages = tf.train.ExponentialMovingAverage(mycifar10.MOVING_AVERAGE_DECAY)
+		# variables_to_restore = variable_averages.variables_to_restore()
+		saver = tf.train.Saver(tf.global_variables())
 		mysession=tf.Session()
 		ckpt = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
 		if ckpt and ckpt.model_checkpoint_path:
@@ -30,10 +31,10 @@ def init_tensorflow():
 			raise Exception('No checkpoint file found')
 
 def plr(photo_path_list):
-	global mygraph,mysession,images_batch,logits,predictions,label_list
+	global mygraph,mysession,images_batch,logits,predictions,label_list,keep_prob
 	images=mycifar10.cope_judgeimage(photo_path_list)
 	with mygraph.as_default():
-		_,predictions_result=mysession.run([logits,predictions],feed_dict={images_batch:images})
+		_,predictions_result=mysession.run([logits,predictions],feed_dict={images_batch:images,keep_prob:1})
 	for i in range(len(photo_path_list)):
 				print(i,label_list[predictions_result[i]],photo_path_list[i])
 	return predictions_result

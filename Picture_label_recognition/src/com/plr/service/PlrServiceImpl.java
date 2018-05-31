@@ -15,10 +15,27 @@ import java.net.UnknownHostException;
 import java.util.Date;
 
 @Service
-public class PlrServiceImpl implements IPlrService{		//这里应该改成静态地进行socket连接，然后连接一直不close，有一次请求就发一
-	private final String photo_path="D:/tmp/Plr_UploadPhoto/";
-	private final String server_ip="127.0.0.1";
-	private final short server_port=6666;
+public class PlrServiceImpl implements IPlrService{
+	private final static String photo_path="D:/tmp/Plr_UploadPhoto/";
+	private final static String server_ip="127.0.0.1";
+	private final static short server_port=6666;
+	private static Socket socket;
+	private static PrintWriter pw;
+	private static BufferedReader br;
+	static {										//将socket连接改为静态连接，并一直不断开，减少socket连接时间
+		try {
+			socket=new Socket(server_ip,server_port);
+			pw=new PrintWriter(socket.getOutputStream());
+			InputStream inputstream=socket.getInputStream();
+			br=new BufferedReader(new InputStreamReader(inputstream,"utf-8"));
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public String Plr_Uploadphoto(MultipartFile photofile) {
 		Date date=new Date();
@@ -47,20 +64,13 @@ public class PlrServiceImpl implements IPlrService{		//这里应该改成静态地进行soc
 		//这里应该调用Tensorflow，获取分类结果
 		String result_labelname = null;
 		try {
-			Socket server_sock=new Socket(server_ip,server_port);
-			PrintWriter printwriter=new PrintWriter(server_sock.getOutputStream());
-			printwriter.write(photo_path);
-			printwriter.flush();
-			//printwriter.close();						我曹 在这里加上这一行后就会出错？？？
-			server_sock.shutdownOutput();    			//关闭输出流		
-			
-			InputStream inputstream=server_sock.getInputStream();
-			BufferedReader bufferedreader=new BufferedReader(new InputStreamReader(inputstream));
-			result_labelname=bufferedreader.readLine();
-			printwriter.close();	
-			bufferedreader.close();
-			
-			server_sock.close();
+			pw.write(photo_path);
+			pw.flush();
+			//printwriter.close();						我曹 在这里加上这一行后就会出错？？？	
+
+			result_labelname=br.readLine();
+			System.out.println(result_labelname);
+			return result_labelname;
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,8 +78,7 @@ public class PlrServiceImpl implements IPlrService{		//这里应该改成静态地进行soc
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(result_labelname);
-		return result_labelname;
+		return null;
 	}
 
 }
