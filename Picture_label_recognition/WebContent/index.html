@@ -8,13 +8,19 @@
 	<body id="body">
 		<p>Example:D:/tmp/mycifar10_data/Train/tiger/full/1.jpg</p></br>
 		输入图片路径：<input type="text" id="input" value="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg" size="70"/></br>
-		<button type="button" onclick="button_getlabel()">Getlabel!</button>
+		<!--  <button type="button" onclick="button_getlabel()">Getlabel!</button> -->
 		<button type="button" onclick="button_getphoto()">Getphoto!</button>
+		
+		<form id="photo_form" action="/" method="post" entype="multipart/form-data">		<!-- <form>标签要添加enctype="multipart/form-data"属性。 -->
+			chose the photo：<input id="photo_id" type="file" name="photo_name">
+			<button id="photo_button_id" type="button" onclick="button_uploadphoto()" >Upload</button>
+		</form>
+		
 	</body>
 	<script>
 		var photo_path="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg"
 		function button_getlabel(){
-			alert("fuck you!");
+			//alert("fuck you!"); 
 			var photo_path=$("#input").val()
 			$.ajax({
 				url:"http://localhost:8080/PLR/plr_getlabel.plr",
@@ -26,11 +32,11 @@
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
-                },
+                }
 			});
 		}
 		function button_getphoto(){
-			alert("ffffuuuucccckkkk    yyyyoooouuuu!!!!");
+			//alert("ffffuuuucccckkkk    yyyyoooouuuu!!!!");
 			$.ajax({
 				url:"http://localhost:8080/PLR/plr_getphoto.plr",
 				dataType:"json",
@@ -49,8 +55,27 @@
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
-                },
+                }
 			});
+		}
+		function button_uploadphoto(){
+			//alert("fuckkkkk")
+			$.ajax({  
+				url:"http://localhost:8080/PLR/plr_uploadphoto.plr",  
+				type:'POST',  
+				cache:false,  			<!-- cache设置为false，上传文件不需要缓存。-->
+				data:new FormData($("#photo_form")[0]),  
+				processData:false,  	<!-- processData设置为false。因为data值是FormData对象，不需要对数据做处理。 -->
+				contentType:false,  	<!-- contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。 -->
+				dataType:"json",
+				success:function (result) {
+			    	if(result.upload_success)alert("upload Success");
+			    	else alert("upload Fail");
+				},  
+				error:function(XMLHttpRequest, textStatus, errorThrown) {
+					alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+				}  
+			});  
 		}
 	</script>
 </html>

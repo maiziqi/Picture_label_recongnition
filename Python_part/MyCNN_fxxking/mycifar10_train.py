@@ -9,17 +9,18 @@ import mycifar10
 
 FLAGS=tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_integer('step_num',1000,
+tf.app.flags.DEFINE_integer('step_num',5000,
 							"""the number of run step .""")
 tf.app.flags.DEFINE_string('train_dir', 'D:/tmp/mycifar10_train',  					
 							"""Directory where to write event logs and checkpoint.""")
-tf.app.flags.DEFINE_integer('batch_size',50,
+tf.app.flags.DEFINE_integer('batch_size',160,
 							"""Number of images to process in a batch.""")
 tf.app.flags.DEFINE_integer('restore_bool',1,
 							"""restore the checkpoint.""")
 def train():
 	#print(FLAGS.restore_bool)
 	dict,label_list=mycifar10.prepare_datadict('Train')
+	Evel_dict,Evel_label_list=mycifar10.prepare_datadict('Evel')
 	with tf.Graph().as_default():
 		global_step = tf.Variable(0, trainable=False,name='global_step')
 		#img_batch,label_batch=mycifar10.train_distorted_inputs()
@@ -70,18 +71,30 @@ def train():
 				if step%100==0 or (step+1)==FLAGS.step_num:
 					checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
 					saver.save(sess, checkpoint_path, global_step=step+restore_global_step)
-				if step%20==0:
-					test_num=int(math.ceil(250/FLAGS.batch_size))
+				if step%50==0:
+					test_num=int(math.ceil(350/FLAGS.batch_size))
 					actually_total_example=test_num*FLAGS.batch_size
 					true_count=0
-					step=0
-					while step<test_num:
+					s=0
+					while s<test_num:
 						images, labels = mycifar10.distorted_inputs(dict,label_list,'Train')
 						predictions=sess.run([top_k_op],feed_dict={image_batch:images,label_batch:labels,keep_prob:1.0})
 						true_count+=np.sum(predictions)
-						step+=1
+						s+=1
 					precision=true_count/actually_total_example
-					print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
+					print('%s: Train precision @ 1 = %.3f' % (datetime.now(), precision))
+					
+					test_num=int(math.ceil(200/FLAGS.batch_size))
+					actually_total_example=test_num*FLAGS.batch_size
+					true_count=0
+					s=0
+					while s<test_num:
+						images, labels = mycifar10.distorted_inputs(Evel_dict,Evel_label_list,'Evel')
+						predictions=sess.run([top_k_op],feed_dict={image_batch:images,label_batch:labels,keep_prob:1.0})
+						true_count+=np.sum(predictions)
+						s+=1
+					precision=true_count/actually_total_example
+					print('%s: Evel precision @ 1 = %.3f' % (datetime.now(), precision))
 		print("Finish")
 
 def mytrain_main(argv=None):

@@ -8,8 +8,10 @@ import net.sf.json.JSONObject;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.plr.entity.Label;
 import com.plr.entity.PhotoName;
@@ -27,7 +29,7 @@ public class LabelController {
 	@Resource
 	private PlrServiceImpl plrserviceimpl;
 	
-	@RequestMapping("/plr_getlabel")
+/*	@RequestMapping("/plr_getlabel")
 	@ResponseBody//此注解不能省略 否则ajax无法接受返回值(不加时，return就是跳转页面了) 
 	public String plr_getlabel(@RequestParam(value="photopath")String photopath) {
 //		System.out.println("?w"+photopath);
@@ -51,7 +53,7 @@ public class LabelController {
 //			System.out.println(e);
 //		}
 		return result_json.toString();
-	}
+	}*/
 	
 	@RequestMapping("/plr_getphoto")
 	@ResponseBody
@@ -74,6 +76,26 @@ public class LabelController {
 		finally{
 			return result_json.toString();
 		}
+	}
+	
+	@RequestMapping(value="/plr_uploadphoto",method=RequestMethod.POST)
+	@ResponseBody
+	public String plr_uploadphoto(@RequestParam(value="photo_name")MultipartFile photofile) {
+		//System.out.println("666");
+		JSONObject result_json=new JSONObject();
+		if(photofile==null||photofile.isEmpty()) {
+			result_json.put("upload_success",false);
+			return result_json.toString();
+		}
+		String photoFullpath=plrserviceimpl.Plr_Uploadphoto(photofile);
+		if(photoFullpath==null) {
+			result_json.put("upload_success",false);
+			return result_json.toString();
+		}
+		result_json.put("upload_success", true);
+		String labelname=plrserviceimpl.Plr_Getlabel(photoFullpath);			//获得图片标签
+		result_json.put("labelname", labelname);
+		return result_json.toString();
 	}
 	
 }

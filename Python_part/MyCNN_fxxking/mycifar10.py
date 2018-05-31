@@ -19,8 +19,8 @@ global NUM_CLASSES,BATCH_SIZE
 NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN=300
 
 NUM_EPOCHS_PER_DECAY=350.0
-LEARNING_RATE_DECAY_FACTOR=0.5									#学习递减率
-INITIAL_LEARNING_RATE=0.0001											#初始学习率
+LEARNING_RATE_DECAY_FACTOR=0.75									#学习递减率
+INITIAL_LEARNING_RATE=0.001									#初始学习率
 MOVING_AVERAGE_DECAY=0.9999
 							
 def _variable_on_cpu(name,shape,initializer):
@@ -185,9 +185,10 @@ def train(total_loss,global_step):
 		# train_op = tf.no_op(name='train')  															#tf.no_op貌似就是 什么都不做。这样做的目的应该是让apply_gradient_op, variables_averages_op都执行完后，再return
 	
 	# return train_op
-	if(global_step%100==0):
+	if(global_step%50==0):
 		global INITIAL_LEARNING_RATE
 		INITIAL_LEARNING_RATE*=LEARNING_RATE_DECAY_FACTOR
+		#print("learning_rate:%0.20f"%INITIAL_LEARNING_RATE)
 	return tf.train.AdamOptimizer(INITIAL_LEARNING_RATE).minimize(total_loss)
 
 ###################################################################
@@ -199,7 +200,7 @@ def train(total_loss,global_step):
 # 	return mycifar10_input.inputs()
 
 ###################################################################
-def prepare_datadict(train_or_evel):
+def prepare_datadict(train_or_evel):									#准备所有的数据
 		
 	data_path=os.path.join(FLAGS.image_data_path,train_or_evel)
 	if not os.path.exists(data_path):
@@ -219,7 +220,7 @@ def prepare_datadict(train_or_evel):
 	return dict,label_list
 
 ###################################################################
-def distorted_inputs(dict,label_list,train_or_evel):
+def distorted_inputs(dict,label_list,train_or_evel):					#抽取BATCH_SIZE数量的图片 作一个集合
 	data_path = os.path.join(FLAGS.image_data_path, train_or_evel)
 	images=[]
 	labels=[]
