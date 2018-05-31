@@ -1,86 +1,191 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-		<meta charset="UTF-8">
-		<title>sto_PLR_orz</title>
-	</head>
-	<body id="body">
-		<!-- <p>Example:D:/tmp/mycifar10_data/Train/tiger/full/1.jpg</p></br>
-		输入图片路径：<input type="text" id="input" value="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg" size="70"/></br> -->
-		<!--  <button type="button" onclick="button_getlabel()">Getlabel!</button> -->
-		
-		<button type="button" onclick="button_getphoto()">Getphoto!</button>
-		
-		<form id="photo_form" action="/" method="post" entype="multipart/form-data">		<!-- <form>标签要添加enctype="multipart/form-data"属性。 -->
-			chose the photo：<input id="photo_id" type="file" name="photo_name">
-			
-			<button type="button" onclick="button_uploadphoto()">Upload!</button>
-		</form>
-		
-	</body>
-	<script>
-		/* var photo_path="D:/tmp/mycifar10_data/Train/tiger/full/1.jpg"
-		function button_getlabel(){
-			//alert("fuck you!"); 
-			var photo_path=$("#input").val()
-			$.ajax({
-				url:"http://localhost:8080/PLR/plr_getlabel.plr",
-				dataType:"json",
-				async: false,
-				data:{photopath:photo_path},
-				success:function(result){
-					alert(result.labelname);
-				},
-				error:function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Merchandise Label</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Flat UI -->
+    <link href="flatUI/css/flat-ui.min.css" rel="stylesheet">
+    <!-- 首页样式表 -->
+    <link href="css/style.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <div class="banner">
+        <!-- 粒子背景 -->
+        <div class="container">
+            <div class="navigation">
+                <nav class="navbar navbar-default navbar-expand-lg" role="navigation">
+                    <a class="navbar-brand" href="#">Merchandise Label</a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse-01"></button>
+                    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+                        <ul class="nav navbar-nav mr-auto">
+                            <li class="active"><a href="#fakelink">标签识别</a></li>
+                            <li><a href="#fakelink">图库展示</a></li>
+                            <li><a href="#fakelink">关于我们</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav><!-- /navbar -->  
+            </div>
+            <div class="main-title text-center">
+                <h3>商品图片素材标签自动识别</h3>
+                <p>基于Tensorflow实现的对商品图片进行识别并显示标签的功能</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="picture">
+            <!-- <form id="upload" action="stupid_motherfucker.mzq" method="post">
+                <input class="hidden" id="img-input" type="file">
+            </form> -->
+            <form id="photo_form" action="/" method="post" entype="multipart/form-data">
+                <input class="hidden" id="photo_id" type="file" name="photo_name">
+                <!-- <button type="button" onclick="button_uploadphoto()">Upload!</button> -->
+            </form>
+            <div class="picture-show" id="select-img">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="300" height="300" viewBox="0 0 300 300">
+                  <rect x="39" y="135" width="222" height="29" rx="8" ry="8" class="cls-1"/>
+                  <rect x="135" y="39" width="29" height="222" rx="8" ry="8" class="cls-1"/>
+                </svg>
+                <div class="picture-frame">
+                    <img id="picture">
+                </div>
+            </div>
+            <div class="picture-label">
+                <ul>
+                    <!--有匹配级别后的多个标签
+                    <li><label>潮流男装</label><label>男上装</label><label>polo衫</label></li>
+                    <li><label>品质女装</label><label>女上装</label><label>打底衫</label></li>
+                    <li><label>品质女装</label><label>裙装套装</label><label>包臀裙</label></li>
+                    <li><label>品质女装</label><label>服装配件</label><label>围巾披肩</label></li>
+                    <li><label>潮流男装</label><label>服饰配件</label><label>领带</label></li>
+                    -->
+                </ul>
+                <label>品质女装</label><label>裙装套装</label><label>包臀裙</label>
+            </div>
+        </div>
+        <div class="gallery" id="gallery">
+            <h6>以下是此标签下的其他商品：</h6>
+            <div class="gallery-picture">
+                <div class="gallery-frame">
+                    <img src="resource/test.jpg">
+                </div>
+            </div>
+            <div class="gallery-picture">
+                <div class="gallery-frame">
+                    <img src="resource/test.jpg">
+                </div>
+            </div>
+            <div class="gallery-picture">
+                <div class="gallery-frame">
+                    <img src="resource/test.jpg">
+                </div>
+            </div>
+            <div class="gallery-picture">
+                <div class="gallery-frame">
+                    <img src="resource/test.jpg">
+                </div>
+            </div>
+            <div class="gallery-picture">
+                <div class="gallery-frame">
+                    <img src="resource/test.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <!-- 加载popper.js -->
+    <script src="js/popper.js"></script>
+    <!-- 加载 flatUI -->
+    <script src="flatUI/scripts/flat-ui.js"></script>
+    <!-- 加载 粒子背景 -->
+    <script src="js/jquery.particleground.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.banner').particleground({
+                dotColor: '#5cbdaa',
+                lineColor: '#5cbdaa'
+            });
+            $(window).scroll(function() {
+                //滚动到底部开始发送ajax请求
+                if ($(document).scrollTop() >= $(document).height() - $(window).height() - 1) {
+                    //alert("loading!");
+                    $.ajax({
+				        url:"http://localhost:8080/PLR/plr_getphoto.plr",
+				        dataType:"json",
+				        async: false,
+				        data:{labelname:"book",photonum:10},
+				        success:function(result){
+					        if(result.isexist==0){
+						        alert("error:label not exist")
+					        }
+					        else{
+						        alert(result.labelpath);
+						        for(var i=0;i<10;i++){
+							        //$("#body").append(result.photolist[i]+"</br>");
+                                    $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+"resource/test.jpg"+"'></div></div>");
+						        }
+					        }
+				        },
+				        error:function(XMLHttpRequest, textStatus, errorThrown) {
+                            //alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+                            alert("AJAX error!");
+                        }
+			        });
                 }
-			});
-		} */
-		function button_getphoto(){
-			//alert("ffffuuuucccckkkk    yyyyoooouuuu!!!!");
-			$.ajax({
-				url:"http://localhost:8080/PLR/plr_getphoto.plr",
-				dataType:"json",
-				async: false,
-				data:{labelname:"book",photonum:10},
-				success:function(result){
-					if(result.isexist==0){
-						alert("error:label not exist")
-					}
-					else{
-						alert(result.labelpath);
-						for(var i=0;i<10;i++){
-							$("#body").append(result.photolist[i]+"</br>");
-						}
-					}
-				},
-				error:function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
-                }
-			});
-		}
-		
-		function button_uploadphoto(){
-			alert("fuckkkkk");
-			$.ajax({  
+            });
+        });
+        $('#select-img').click(function() {
+            $('#photo_id').click();
+        });
+        $('#photo_id').change(function(){
+            //alert($('#photo_id').val());
+            var oFReader = new FileReader();
+            var file = document.getElementById('photo_id').files[0];
+            oFReader.readAsDataURL(file);
+            oFReader.onloadend = function(oFRevent){
+                var src = oFRevent.target.result;
+                $('#picture').attr('src',src);
+                //alert(src);
+            }
+            //选择图片之后进行ajax请求
+            $.ajax({  
 				url:"http://localhost:8080/PLR/plr_uploadphoto.plr",  
 				type:'POST',  
-				cache:false,  			<!-- cache设置为false，上传文件不需要缓存。-->
+				cache:false,  			//cache设置为false，上传文件不需要缓存。
 				data:new FormData($("#photo_form")[0]),  
-				processData:false,  	<!-- processData设置为false。因为data值是FormData对象，不需要对数据做处理。 -->
-				contentType:false,  	<!-- contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。 -->
+				processData:false,  	//processData设置为false。因为data值是FormData对象，不需要对数据做处理。 -->
+				contentType:false,  	//contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。 -->
 				dataType:"json",
 				success:function (result) {
 			    	if(result.upload_success){
 			    		alert("upload Success"+result.labelname);
+                        $('.picture-label').css('display','inline');
+                        $('.gallery').css('display','block');
+                        $(".picture-label").animate({opacity:"0.0"},500,function(){
+                            $(".gallery").animate({opacity:"0.0"},500);
+                        });
+                        $(".picture-label").animate({opacity:"1.0"},1000,function(){
+                            $(".gallery").animate({opacity:"1.0"},1200);
+                        });
 			    	}
 			    	else alert("upload Fail");
-				},  
+				},
 				error:function(XMLHttpRequest, textStatus, errorThrown) {
-					alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
-				}  
-			});  
-		}
-	</script>
+                    //alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+					alert("AJAX error!");
+				}
+			});
+        });
+    </script>
+  </body>
 </html>
