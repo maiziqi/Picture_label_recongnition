@@ -57,16 +57,16 @@
                 </div>
             </div>
             <div class="picture-label">
-                <ul>
-                    <!--有匹配级别后的多个标签
+                <!-- <ul>
+                    有匹配级别后的多个标签
                     <li><label>潮流男装</label><label>男上装</label><label>polo衫</label></li>
                     <li><label>品质女装</label><label>女上装</label><label>打底衫</label></li>
                     <li><label>品质女装</label><label>裙装套装</label><label>包臀裙</label></li>
                     <li><label>品质女装</label><label>服装配件</label><label>围巾披肩</label></li>
                     <li><label>潮流男装</label><label>服饰配件</label><label>领带</label></li>
-                    -->
-                </ul>
-                <label>品质女装</label><label>裙装套装</label><label>包臀裙</label>
+                   
+                </ul> -->
+                <label id="label1">品质女装</label><label id="label2">裙装套装</label><label id="label3">包臀裙</label>
             </div>
         </div>
         <div class="gallery" id="gallery">
@@ -169,6 +169,11 @@
 				success:function (result) {
 			    	if(result.upload_success){
 			    		alert("upload Success"+result.labelname);
+                        //切割标签名 并赋值
+                        var label = result.labelname.split("_");
+                        $("#label1").html(label[0]);
+                        $("#label2").html(label[1]);
+                        $("#label3").html(label[2]);
                         $('.picture-label').css('display','inline');
                         $('.gallery').css('display','block');
                         $(".picture-label").animate({opacity:"0.0"},500,function(){
