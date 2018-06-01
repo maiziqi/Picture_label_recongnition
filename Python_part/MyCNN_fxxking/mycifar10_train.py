@@ -13,7 +13,7 @@ tf.app.flags.DEFINE_integer('step_num',5000,
 							"""the number of run step .""")
 tf.app.flags.DEFINE_string('train_dir', 'D:/tmp/mycifar10_train',  					
 							"""Directory where to write event logs and checkpoint.""")
-tf.app.flags.DEFINE_integer('batch_size',160,
+tf.app.flags.DEFINE_integer('batch_size',120,
 							"""Number of images to process in a batch.""")
 tf.app.flags.DEFINE_integer('restore_bool',1,
 							"""restore the checkpoint.""")
@@ -54,7 +54,7 @@ def train():
 					return  
 			#tf.train.start_queue_runners(sess=sess)
 			for step in range(FLAGS.step_num):
-				print(step+restore_global_step)
+				# print(step+restore_global_step)
 				images, labels = mycifar10.distorted_inputs(dict,label_list,'Train')
 				#print(labels)	
 				start_time=time.time()
@@ -72,7 +72,7 @@ def train():
 					checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
 					saver.save(sess, checkpoint_path, global_step=step+restore_global_step)
 				if step%50==0:
-					test_num=int(math.ceil(350/FLAGS.batch_size))
+					test_num=int(math.ceil(300/FLAGS.batch_size))
 					actually_total_example=test_num*FLAGS.batch_size
 					true_count=0
 					s=0
@@ -84,7 +84,7 @@ def train():
 					precision=true_count/actually_total_example
 					print('%s: Train precision @ 1 = %.3f' % (datetime.now(), precision))
 					
-					test_num=int(math.ceil(200/FLAGS.batch_size))
+					test_num=int(math.ceil(300/FLAGS.batch_size))
 					actually_total_example=test_num*FLAGS.batch_size
 					true_count=0
 					s=0
