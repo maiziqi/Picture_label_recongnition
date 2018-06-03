@@ -169,6 +169,7 @@
 				success:function (result) {
 			    	if(result.upload_success){
 			    		alert("upload Success"+result.labelname);
+			    		alert("similar_photo_list:"+result.similar_photo_list)
                         //切割标签名 并赋值
                         var label = result.labelname.split("_");
                         $("#label1").html(label[0]);

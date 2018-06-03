@@ -1,6 +1,7 @@
 #import time
 import threading
 import socket
+import json
 
 from MyCNN import plr
 
@@ -22,11 +23,12 @@ bind_port=6666
 def tcplink(client_sock,client_addr):
 	print('Accept new connection from %s:%s...' % client_addr)
 	photo_path=(client_sock.recv(256)).decode('utf-8')
-	print("client:%s"%photo_path)
-	label=plr.input_photo(photo_path)
+	# print("client:%s"%photo_path)
+	character,label=plr.input_photo(photo_path)
 	#调用 Tensorflow...
 	#label="book"
-	client_sock.send(label.encode('utf-8'))
+	result=json.dumps({"character":character,"label":label})					#将图片特征值和便签名传输过去
+	client_sock.send(result.encode('utf-8'))
 	client_sock.close()
 	print('Connection from %s:%s closed.' % client_addr)
 

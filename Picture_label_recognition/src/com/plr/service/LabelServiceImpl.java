@@ -3,6 +3,8 @@ package com.plr.service;
 import com.plr.entity.Label;
 import com.plr.dao.ILabelDAO;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,6 @@ public class LabelServiceImpl implements ILabelService{
 	
 	@Override
 	public boolean isexist(String label_name) throws Exception{
-//		if(labeldao.isexist(label_name)==0) return false;
-//		return true;
 		return labeldao.isexist(label_name)!=0;
 	}
 	
@@ -31,5 +31,10 @@ public class LabelServiceImpl implements ILabelService{
 	@Override
 	public Label select_by_labelname(String label_name) throws Exception {
 		return labeldao.select_by_labelname(label_name);
+	}
+
+	@Override
+	public List<Label> select_all_label() throws Exception {
+		return labeldao.select_all_label();
 	}
 }

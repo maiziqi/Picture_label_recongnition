@@ -13,10 +13,14 @@
 		create table if not exists ${table_name} (		<!-- 当使用@{}时，一定要用@Param注释，否则报错 -->
 			photo_id int(5) unsigned auto_increment,
 			photo_name varchar(100) not null unique,
+			photo_character varchar(2500) not null,			<!-- 图片的特征值 -->
 			primary key(photo_id) 
 		)engine=innoDB default charset=utf8;
 	</update>
 	<select id="select_by_labelname" resultType="Label">
 		select label_name,label_path,table_name from label_list where label_name=#{label_name}
+	</select>
+	<select id="select_all_label" resultType="Label">
+		select label_name,label_path,table_name from label_list
 	</select>
 </mapper>

@@ -4,10 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plr.dao.IPhotonameDAO">
 	<insert id="insertPhotoname">
-		insert ignore into ${table_name} (photo_name) values(#{photoname})
+		insert ignore into ${table_name} (photo_name,photo_character) values(#{photoname},#{photo_character})
 	</insert>
 	<select id="search_photo" resultType="String">
-		select photo_name from ${table_name} where photo_id>(select floor(rand()*(
+		select photo_name from ${table_name} where photo_id>(select floor(rand()*(				<!-- 从指定图片类别库中 随机获取一张图片名字 -->
 			select max(photo_id) from ${table_name}))) limit 1;
+	</select>
+	<select id="select_all_photo" resultType="PhotoName">
+		select photo_name,photo_character from ${table_name}
 	</select>
 </mapper>
