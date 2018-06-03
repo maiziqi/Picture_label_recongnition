@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form id="photo_form" action="/" method="post" entype="multipart/form-data">
+		<input id="photo_id" type="file" name="photo">
+		<button type="button" onclick="button_getlabel()">GetLabel!</button>
+		<button type="button" onclick="button_getsimilarphoto()">GetSimilarphoto!</button>
+	</form>
+	<button type="button" onclick="button_getphoto()">GetPhoto!</button>
+</body>
+
+ 	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <!-- 加载popper.js -->
+    <script src="js/popper.js"></script>
+    <!-- 加载 flatUI -->
+    <script src="flatUI/scripts/flat-ui.js"></script>
+    <!-- 加载 粒子背景 -->
+    <script src="js/jquery.particleground.js"></script>
+    <script>
+    	var url_head="http://localhost:8080/PLR/";
+    	var url_end=".plr";
+    	function button_getlabel(){
+    		alert("GetLabel");
+    		$.ajax({
+    			url:url_head+"plr_getlabel"+url_end,
+    			type:'POST',  
+				cache:false,  			//cache设置为false，上传文件不需要缓存。
+				data:new FormData($("#photo_form")[0]),  
+				processData:false,  	//processData设置为false。因为data值是FormData对象，不需要对数据做处理。 -->
+				contentType:false,  	//contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。 -->
+				dataType:"json",
+    			success:function(result){
+    				if(result.upload_success){
+    					alert("Upload Success,label is "+result.labelname);
+    				}
+    				else alert("Upload Fail");
+    			},
+    			error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+				}
+    		});
+    	}
+    	
+    	function button_getsimilarphoto(){
+    		alert("GetSimilarPhoto");
+    		$.ajax({
+    			url:url_head+"plr_getsimilarphoto"+url_end,
+    			type:'POST',  
+				cache:false,  			//cache设置为false，上传文件不需要缓存。
+				data:new FormData($("#photo_form")[0]),  
+				processData:false,  	//processData设置为false。因为data值是FormData对象，不需要对数据做处理。 -->
+				contentType:false,  	//contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。 -->
+				dataType:"json",
+    			success:function(result){
+    				if(result.upload_success){
+    					alert("Upload Success,label is "+result.labelname);
+    					alert("root path is "+result.labelpath);
+    					alert("SimilarPhoto is "+result.similar_photo_list);
+    				}
+    				else alert("Upload Fail");
+    			},
+    			error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+				}
+    		});
+    	}
+    	
+    	function button_getphoto(){
+    		alert("GetPhoto");
+    		$.ajax({
+    			url:url_head+"plr_getphoto"+url_end,
+    			dataType:"json",
+		        async: false,
+		        data:{labelname:"book",photonum:10},
+		        success:function(result){
+			        if(result.isexist==0){
+				        alert("error:label not exist")
+			        }
+			        else{
+			        	alert("root path is "+result.labelpath);
+    					alert("photo is "+result.photolist);
+			        }
+		        },
+		        error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    //alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+                    alert("AJAX error!");
+                }
+    		});
+    	}
+    </script>
+</html>

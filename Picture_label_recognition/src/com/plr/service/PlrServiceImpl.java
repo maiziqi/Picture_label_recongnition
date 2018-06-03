@@ -102,7 +102,7 @@ public class PlrServiceImpl implements IPlrService{
 		for(int i=0;i<similar_num;i++) result[i]=similar_photo[i].photo_name;		//将前五名名字录入result
 		return result;
 	}
-	private static final int similar_num=5;									//只找出图片库中相似度前五名的图片
+	private static final int similar_num=4;									//只找出图片库中相似度前  4  名的图片
 	private class Similar_photo{							//这个类仅仅是为了排序好排一点（即定义一种数据结构）
 		public String photo_name;
 		public double degree;			//degree记录相似程度（越小越相似）

@@ -83,9 +83,28 @@ public class LabelController {
 		}
 	}
 	
-	@RequestMapping(value="/plr_uploadphoto",method=RequestMethod.POST, produces = "application/json; charset=utf-8")
+	@RequestMapping(value="/plr_getlabel",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String plr_uploadphoto(@RequestParam(value="photo_name")MultipartFile photofile) {		//客户端上传一张图片，下载该图片，并将该图片丢入Tensorflow测试，返回预测的label
+	public String plr_getlabel(@RequestParam(value="photo")MultipartFile photofile) {			//仅仅获得上传图片的标签
+		JSONObject result_json=new JSONObject();
+		if(photofile==null||photofile.isEmpty()) {
+			result_json.put("upload_success",false);
+			return result_json.toString();
+		}
+		String photoFullpath=plrserviceimpl.Plr_Uploadphoto(photofile);
+		if(photoFullpath==null) {
+			result_json.put("upload_success",false);
+			return result_json.toString();
+		}
+		result_json.put("upload_success", true);
+		photo_Label_and_Character plac=plrserviceimpl.Plr_Getlabel(photoFullpath);
+		result_json.put("labelname", plac.getPhoto_label());
+		return result_json.toString();
+	}
+	
+	@RequestMapping(value="/plr_getsimilarphoto",method=RequestMethod.POST, produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String plr_getsimilarphoto(@RequestParam(value="photo")MultipartFile photofile) {		//客户端上传一张图片，下载该图片，并将该图片丢入Tensorflow测试，返回预测的label
 		//System.out.println("666");
 		JSONObject result_json=new JSONObject();
 		if(photofile==null||photofile.isEmpty()) {
@@ -117,5 +136,4 @@ public class LabelController {
 		
 		return result_json.toString();
 	}
-	
 }

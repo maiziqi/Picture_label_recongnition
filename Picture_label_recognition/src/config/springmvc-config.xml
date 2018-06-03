@@ -20,7 +20,7 @@
     <mvc:annotation-driven />
     
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
-    	<property name="prefix" value="/WEB-INF/html/" />			<!-- 别写成了 WEB-INF/html(漏掉‘/’) 或者  WEB_INF/html(应为‘-’)-->
+    	<property name="prefix" value="/" />			<!-- 别写成了 WEB-INF/html(漏掉‘/’) 或者  WEB_INF/html(应为‘-’)-->
     	<property name="suffix" value=".html" />
     </bean>
     
