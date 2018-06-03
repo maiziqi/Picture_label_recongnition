@@ -36,18 +36,11 @@ public class LabelController {
 	private PhotonameServiceImpl photonameserviceimpl;
 	@Resource
 	private PlrServiceImpl plrserviceimpl;
-	
-//	@PostConstruct
-//	public void init() {										//https://blog.csdn.net/qq_34560242/article/details/77570806这样可以实现在静态方法中调用Spring组件
-//		labelController=this;
-//		labelController.labelserviceimpl=this.labelserviceimpl;
-//		labelController.photonameserviceimpl=this.photonameserviceimpl;
-//	}
-//	public static LabelController labelController;							
+							
 	public static HashMap<String,List<photoname_and_characterArray>> photo_list_hash=new HashMap<String,List<photoname_and_characterArray>>();
 	
-	static{
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:config/Application.xml");
+	static{								//这里将数据库中所有图片读好，目的是提前将字符串形式的图片特征值处理并存储为double数组，以空间换时间
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:config/Application.xml");			//静态方法里暂时只能这样获取到bean了
 		LabelServiceImpl static_labelserviceimpl = ctx.getBean(LabelServiceImpl.class);
 		PhotonameServiceImpl static_photonameserviceimpl=ctx.getBean(PhotonameServiceImpl.class);
 		try {
@@ -66,32 +59,7 @@ public class LabelController {
 			e.printStackTrace();
 		}
 	}
-/*	@RequestMapping("/plr_getlabel")
-	@ResponseBody//此注解不能省略 否则ajax无法接受返回值(不加时，return就是跳转页面了) 
-	public String plr_getlabel(@RequestParam(value="photopath")String photopath) {
-//		System.out.println("?w"+photopath);
-//		List<String> label_list=new ArrayList<String>();
-//		label_list.add("D:/abc");
-//		label_list.add("C:/qwer");
-//		JSONArray jsonarray = JSONArray.fromObject(label_list);
-//		JSONObject json=new JSONObject();
-//		json.put("label_list", jsonarray);
-//		return json.toString();
-		JSONObject result_json=new JSONObject();
-		String labelname=plrserviceimpl.Plr_Getlabel(photopath);
-		result_json.put("labelname", labelname);
-//		try {
-//			Label label=labelserviceimpl.select_by_labelname(labelname);
-//			result_json.put("labelpath", label.getLabel_path());
-//			String table_name=label.getTable_name();
-//			System.out.println(table_name);
-//			//获取所有图片名字
-//		}catch(Exception e) {
-//			System.out.println(e);
-//		}
-		return result_json.toString();
-	}*/
-	
+
 	@RequestMapping("/plr_getphoto")
 	@ResponseBody
 	public String plr_getphoto(@RequestParam(value="labelname")String labelname,@RequestParam(value="photonum")int photonum) {		//给出标签名label和图片数量N，随机返回N张label标签的图片

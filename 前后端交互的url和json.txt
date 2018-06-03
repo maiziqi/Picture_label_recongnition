@@ -1,0 +1,28 @@
+1.
+	url:"http://localhost:8080/PLR/plr_uploadphoto.plr"
+	作用：前端上传一张图片，后端返回该图片的 标签 和 5张相似图片
+	前端传后端的json：{
+			photo_name：图片文件
+		}；
+
+	后端返回的json：{
+		upload_success：true/false        //true即成功上传图片
+		labelname：		//图片的标签
+		labelpath：		//图片的父路径
+		similar_photo_list：[1.jpg，2.jpg，3.jpg，4.jpg，5.jpg]     	//5张图片的名字（json数组形式）
+	}；
+
+
+
+2.
+	url: "http://localhost:8080/PLR/plr_getphoto.plr"
+	作用：前端给出 标签名 和 需要的图片数N ，后端返回 N张该标签的图片
+	前端传后端的json：{
+			labelname：	//标签名
+			photonum：	//需要的图片数量
+		}；
+
+	后端返回的json：{
+		labelpath：		//图片的父路径
+		photolist：     		//N张图片的名字（json数组形式）
+	}；
