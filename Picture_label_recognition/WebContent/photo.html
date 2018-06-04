@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Merchandise Label</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Flat UI -->
+    <link href="flatUI/css/flat-ui.min.css" rel="stylesheet">
+    <!-- 首页样式表 -->
+    <link href="css/photo.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <div class="banner">
+        <!-- 粒子背景 -->
+        <div class="container">
+            <div class="navigation">
+                <nav class="navbar navbar-default navbar-expand-lg" role="navigation">
+                    <a class="navbar-brand" href="#">Merchandise Label</a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse-01"></button>
+                    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+                        <ul class="nav navbar-nav mr-auto">
+                            <li><a href="index.html">标签识别</a></li>
+                            <li class="active"><a href="#">以图搜图</a></li>
+                            <li><a href="about.html">关于我们</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav><!-- /navbar -->  
+            </div>
+            <div class="main-title text-center">
+                <h3>商品图片素材以图搜图</h3>
+                <p>基于Tensorflow实现的对商品图片进行特征值识别并搜索图片的功能</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="picture">
+            <form id="photo_form" action="/" method="post" entype="multipart/form-data">
+                <input class="hidden" id="photo_id" type="file" name="photo_name">
+            </form>
+            <div class="picture-show" id="select-img">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="300" height="300" viewBox="0 0 300 300">
+                  <rect x="39" y="135" width="222" height="29" rx="8" ry="8" class="cls-1"/>
+                  <rect x="135" y="39" width="29" height="222" rx="8" ry="8" class="cls-1"/>
+                </svg>
+                <div class="picture-frame">
+                    <img id="picture">
+                </div>
+            </div>
+            <div class="picture-label">
+                <label id="label1">品质女装</label><label id="label2">裙装套装</label><label id="label3">包臀裙</label>
+            </div>
+        </div>
+        <div class="gallery" id="gallery">
+            <h6>以下是以图搜图的结果：</h6>
+        </div>
+    </div>
+    
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <!-- 加载popper.js -->
+    <script src="js/popper.js"></script>
+    <!-- 加载 flatUI -->
+    <script src="flatUI/scripts/flat-ui.js"></script>
+    <!-- 加载 粒子背景 -->
+    <script src="js/jquery.particleground.js"></script>
+    <script>
+        var url_head="http://localhost:8080/PLR/";
+    	var url_end=".plr";
+        $(document).ready(function() {
+            $('.banner').particleground({
+                dotColor: '#5cbdaa',
+                lineColor: '#5cbdaa'
+            });
+        });
+        $('#select-img').click(function() {
+            $('#photo_id').click();
+        });
+        $('#photo_id').change(function(){
+            var oFReader = new FileReader();
+            var file = document.getElementById('photo_id').files[0];
+            oFReader.readAsDataURL(file);
+            oFReader.onloadend = function(oFRevent){
+                var src = oFRevent.target.result;
+                $('#picture').attr('src',src);
+            }
+            //选择图片之后进行相似图片获取
+            alert("GetSimilarPhoto");
+    		$.ajax({
+    			url:url_head+"plr_getsimilarphoto"+url_end,
+    			type:'POST',  
+				cache:false,  			//cache设置为false，上传文件不需要缓存。
+				data:new FormData($("#photo_form")[0]),  
+				processData:false,  	//processData设置为false。因为data值是FormData对象，不需要对数据做处理。 -->
+				contentType:false,  	//contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。 -->
+				dataType:"json",
+    			success:function(result){
+    				if(result.upload_success){
+    					alert("Upload Success,label is "+result.labelname);
+    					alert("root path is "+result.labelpath);
+    					alert("SimilarPhoto is "+result.similar_photo_list);
+                        var label = result.labelname.split("_");
+                        $("#label1").html(label[0]);
+                        $("#label2").html(label[1]);
+                        $("#label3").html(label[2]);
+                        for(var i=0;i<4;i++){
+                            $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+result.labelpath+"/"+result.photolist[i]+"'></div></div>");
+						}
+                        //图片获取完成后 显示动画效果
+                        $('.picture-label').css('display','inline');
+                        $('.gallery').css('display','block');
+                        $(".picture-label").animate({opacity:"0.0"},500,function(){
+                            $(".gallery").animate({opacity:"0.0"},500);
+                        });
+                        $(".picture-label").animate({opacity:"1.0"},1000,function(){
+                            $(".gallery").animate({opacity:"1.0"},1200);
+                        });
+    				}
+    				else alert("Upload Fail");
+    			},
+    			error:function(XMLHttpRequest, textStatus, errorThrown) {
+                    //alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+                    alert("AJAX error!");
+				}
+    		});
+        });
+    </script>
+  </body>
+</html>

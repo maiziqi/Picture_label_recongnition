@@ -25,9 +25,9 @@
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse-01"></button>
                     <div class="collapse navbar-collapse" id="navbar-collapse-01">
                         <ul class="nav navbar-nav mr-auto">
-                            <li class="active"><a href="#fakelink">标签识别</a></li>
-                            <li><a href="#fakelink">图库展示</a></li>
-                            <li><a href="#fakelink">关于我们</a></li>
+                            <li class="active"><a href="#">标签识别</a></li>
+                            <li><a href="photo.html">以图搜图</a></li>
+                            <li><a href="about.html">关于我们</a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </nav><!-- /navbar -->  
@@ -71,31 +71,6 @@
         </div>
         <div class="gallery" id="gallery">
             <h6>以下是此标签下的其他商品：</h6>
-            <div class="gallery-picture">
-                <div class="gallery-frame">
-                    <img src="resource/test.jpg">
-                </div>
-            </div>
-            <div class="gallery-picture">
-                <div class="gallery-frame">
-                    <img src="resource/test.jpg">
-                </div>
-            </div>
-            <div class="gallery-picture">
-                <div class="gallery-frame">
-                    <img src="resource/test.jpg">
-                </div>
-            </div>
-            <div class="gallery-picture">
-                <div class="gallery-frame">
-                    <img src="resource/test.jpg">
-                </div>
-            </div>
-            <div class="gallery-picture">
-                <div class="gallery-frame">
-                    <img src="resource/test.jpg">
-                </div>
-            </div>
         </div>
     </div>
     
@@ -103,13 +78,15 @@
     <script src="js/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="bootstrap/js/bootstrap.js"></script>
-    <!-- 加载popper.js -->
+    <!-- 加载 popper.js -->
     <script src="js/popper.js"></script>
     <!-- 加载 flatUI -->
     <script src="flatUI/scripts/flat-ui.js"></script>
     <!-- 加载 粒子背景 -->
     <script src="js/jquery.particleground.js"></script>
     <script>
+        var url_head="http://localhost:8080/PLR/";
+    	var url_end=".plr";
         $(document).ready(function() {
             $('.banner').particleground({
                 dotColor: '#5cbdaa',
@@ -119,20 +96,22 @@
                 //滚动到底部开始发送ajax请求
                 if ($(document).scrollTop() >= $(document).height() - $(window).height() - 1) {
                     //alert("loading!");
+                    alert("GetPhoto");
                     $.ajax({
-				        url:"http://localhost:8080/PLR/plr_getphoto.plr",
+				        url:url_head+"plr_getphoto"+url_end,
 				        dataType:"json",
 				        async: false,
-				        data:{labelname:"book",photonum:10},
+				        data:{labelname:"book",photonum:8},
 				        success:function(result){
 					        if(result.isexist==0){
 						        alert("error:label not exist")
 					        }
 					        else{
-						        alert(result.labelpath);
-						        for(var i=0;i<10;i++){
+						        alert("root path is "+result.labelpath);
+    					        alert("photo is "+result.photolist);
+						        for(var i=0;i<8;i++){
 							        //$("#body").append(result.photolist[i]+"</br>");
-                                    $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+"resource/test.jpg"+"'></div></div>");
+                                    $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+result.labelpath+"/"+result.photolist[i]+"'></div></div>");
 						        }
 					        }
 				        },
@@ -158,8 +137,9 @@
                 //alert(src);
             }
             //选择图片之后进行ajax请求
+            alert("GetLabel");
             $.ajax({  
-				url:"http://localhost:8080/PLR/plr_uploadphoto.plr",  
+				url:url_head+"plr_getlabel"+url_end,  
 				type:'POST',  
 				cache:false,  			//cache设置为false，上传文件不需要缓存。
 				data:new FormData($("#photo_form")[0]),  
@@ -169,20 +149,44 @@
 				success:function (result) {
 			    	if(result.upload_success){
 			    		alert("upload Success"+result.labelname);
-			    		alert("similar_photo_list:"+result.similar_photo_list)
                         //切割标签名 并赋值
                         var label = result.labelname.split("_");
                         $("#label1").html(label[0]);
                         $("#label2").html(label[1]);
                         $("#label3").html(label[2]);
-                        $('.picture-label').css('display','inline');
-                        $('.gallery').css('display','block');
-                        $(".picture-label").animate({opacity:"0.0"},500,function(){
-                            $(".gallery").animate({opacity:"0.0"},500);
-                        });
-                        $(".picture-label").animate({opacity:"1.0"},1000,function(){
-                            $(".gallery").animate({opacity:"1.0"},1200);
-                        });
+                        //获取标签后 获取与标签相关的8张图片
+                        alert("GetPhoto");
+                        $.ajax({
+				            url:url_head+"plr_getphoto"+url_end,
+				            dataType:"json",
+				            async: false,
+				            data:{labelname:"book",photonum:8},
+				            success:function(result){
+					            if(result.isexist==0){
+						            alert("error:label not exist")
+					            }
+					            else{
+						            alert("root path is "+result.labelpath);
+    					            alert("photo is "+result.photolist);
+						            for(var i=0;i<8;i++){
+                                        $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+result.labelpath+"/"+result.photolist[i]+"'></div></div>"); 
+                                    }
+                                    //图片获取完成后 显示动画效果
+                                    $('.picture-label').css('display','inline');
+                                    $('.gallery').css('display','block');
+                                    $(".picture-label").animate({opacity:"0.0"},500,function(){
+                                        $(".gallery").animate({opacity:"0.0"},500);
+                                    });
+                                    $(".picture-label").animate({opacity:"1.0"},1000,function(){
+                                        $(".gallery").animate({opacity:"1.0"},1200);
+                                    });
+					            }
+				            },
+				            error:function(XMLHttpRequest, textStatus, errorThrown) {
+                                //alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+                                alert("AJAX error!");
+                            }
+			            });
 			    	}
 			    	else alert("upload Fail");
 				},

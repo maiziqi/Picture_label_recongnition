@@ -1,0 +1,124 @@
+body {
+    background-color: #ffffff;
+  }
+  
+  .banner {
+    height: 250px;
+    border-bottom: 1px #cccccc solid;
+  }
+  
+  .navigation {
+    margin-top: -230px;
+  }
+  
+  .main-title {
+    display: block;
+    position: relative;
+    margin-top: 40px;
+  }
+  
+  .picture {
+    float: left; 
+    position: relative; 
+    left: 50%;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .picture-show {
+    float: left; 
+    position: relative; 
+    right: 50%;
+    height: 300px;
+    width: 300px;
+    margin: 50px 30px 0 50px;
+    background-color: #edeff1;
+    border-radius: 10px;
+  }
+  
+  .picture-show:hover .cls-1 {
+    fill: #1ABC9C;
+  }
+  
+  .cls-1 {
+    fill: #2C3E50;
+  }
+  
+  .picture-frame {
+    margin-top: -304px;
+    margin-left: 5px;
+    height: 290px;
+    width: 290px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .picture-label{
+    display: none;
+    float: left;
+    position: relative; 
+    right: 50%;
+    margin: 60px 0 0 30px;
+    opacity: 0.0
+  }
+  
+  .picture-label label {
+    margin: 100px 8px 0 20px;
+    padding: 0 25px;
+    font-size: 17px;
+    border-radius: 5px;
+    background-color: #edeff1;
+  }
+  
+  .picture-label ul li {
+    list-style-type: none;
+  }
+  
+  .picture-label ul li label {
+    margin: 5px 8px 15px 8px;
+    padding: 0 25px;
+    font-size: 17px;
+    border-radius: 5px;
+    background-color: #edeff1;
+  }
+  
+  .picture-label ul li label:hover {
+    color:#1ABC9C;
+  }
+  
+  .gallery {
+    display: none;
+    clear: both;
+    overflow: hidden;
+    opacity: 0.0;
+  }
+  
+  .gallery h6 {
+    margin: 20px 0 0 15px;
+  }
+  
+  .gallery-picture {
+    float: left;
+    height: 250px;
+    width: 250px;
+    margin: 15px 10px 10px 10px;
+    padding: 4px;
+    background-color: #edeff1;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .gallery-frame {
+    height: 241px;
+    width: 241px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .single-picture img {
+    height: 240px;
+    width: 240px;
+  }
+  
