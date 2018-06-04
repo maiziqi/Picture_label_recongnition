@@ -87,38 +87,42 @@ body {
   .picture-label ul li label:hover {
     color:#1ABC9C;
   }
-  
-  .gallery {
-    display: none;
-    clear: both;
+
+  .about {
+      float: left;
+  }
+
+  .about-background {
+    height: 162px;
+    width: 162px;
+    background-color: #edeff1;
+    border-radius: 50%;
+    padding: 6px;
+    margin-top: 20px;
+    margin-left: 60px;
+    margin-bottom: -90px;
+  }
+
+  .about-frame {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
     overflow: hidden;
-    opacity: 0.0;
   }
-  
-  .gallery h6 {
-    margin: 20px 0 0 15px;
-  }
-  
-  .gallery-picture {
-    float: left;
-    height: 250px;
+
+  .about-gallery {
+    height: 380px;
     width: 250px;
-    margin: 15px 10px 10px 10px;
-    padding: 4px;
+    padding: 70px 10px 20px 10px;
     background-color: #edeff1;
     border-radius: 8px;
-    overflow: hidden;
+    margin: 14px 13px 15px 14px;
   }
   
-  .gallery-frame {
-    height: 241px;
-    width: 241px;
-    border-radius: 5px;
-    overflow: hidden;
+  .about-gallery h6 {
+    font-size: 20px;
   }
-  
-  .single-picture img {
-    height: 240px;
-    width: 240px;
+
+  .about-gallery p {
+    font-size: 17px;
   }
-  
