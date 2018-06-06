@@ -5,6 +5,9 @@ import numpy
 import math
 from PIL import Image
 
+from PIL import ImageFile								#以下两句不加会报image file is truncated错误？？？
+ImageFile.LOAD_TRUNCATED_IMAGES = True			
+
 #import mycifar10_input
 FLAGS=tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('image_data_path','D:/tmp/mycifar10_data',
@@ -20,8 +23,8 @@ global NUM_CLASSES,BATCH_SIZE
 NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN=300
 
 NUM_EPOCHS_PER_DECAY=350.0
-LEARNING_RATE_DECAY_FACTOR=0.85									#学习递减率
-INITIAL_LEARNING_RATE=0.001									#初始学习率
+LEARNING_RATE_DECAY_FACTOR=0.9									#学习递减率					0.5
+INITIAL_LEARNING_RATE=p=0.00001								#初始学习率						0.001
 MOVING_AVERAGE_DECAY=0.9999
 							
 def _variable_on_cpu(name,shape,initializer):
@@ -186,10 +189,10 @@ def train(total_loss,global_step):
 		# train_op = tf.no_op(name='train')  															#tf.no_op貌似就是 什么都不做。这样做的目的应该是让apply_gradient_op, variables_averages_op都执行完后，再return
 	
 	# return train_op
-	if(global_step%25==0):
-		global INITIAL_LEARNING_RATE
-		INITIAL_LEARNING_RATE*=LEARNING_RATE_DECAY_FACTOR
-		INITIAL_LEARNING_RATE*=(1-INITIAL_LEARNING_RATE)*0.05
+	# if(global_step%25==0):
+		# global INITIAL_LEARNING_RATE,LEARNING_RATE_DECAY_FACTOR
+		# INITIAL_LEARNING_RATE*=LEARNING_RATE_DECAY_FACTOR
+		# LEARNING_RATE_DECAY_FACTOR+=(1-LEARNING_RATE_DECAY_FACTOR)*0.005
 		#print("learning_rate:%0.20f"%INITIAL_LEARNING_RATE)
 	return tf.train.AdamOptimizer(INITIAL_LEARNING_RATE).minimize(total_loss)
 

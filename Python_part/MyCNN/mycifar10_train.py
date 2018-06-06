@@ -13,7 +13,7 @@ tf.app.flags.DEFINE_integer('step_num',5000,
 							"""the number of run step .""")
 tf.app.flags.DEFINE_string('train_dir', 'D:/tmp/mycifar10_train',  					
 							"""Directory where to write event logs and checkpoint.""")
-tf.app.flags.DEFINE_integer('batch_size',120,
+tf.app.flags.DEFINE_integer('batch_size',100,
 							"""Number of images to process in a batch.""")
 tf.app.flags.DEFINE_integer('restore_bool',1,
 							"""restore the checkpoint.""")

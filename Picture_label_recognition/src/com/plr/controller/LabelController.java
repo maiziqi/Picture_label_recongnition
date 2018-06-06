@@ -60,7 +60,7 @@ public class LabelController {
 		}
 	}
 
-	@RequestMapping("/plr_getphoto")
+	@RequestMapping(value="/plr_getphoto",produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String plr_getphoto(@RequestParam(value="labelname")String labelname,@RequestParam(value="photonum")int photonum) {		//给出标签名label和图片数量N，随机返回N张label标签的图片
 		JSONObject result_json=new JSONObject();
