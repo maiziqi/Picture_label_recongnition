@@ -58,16 +58,6 @@
         </div>
         <div class="gallery" id="gallery">
             <h6>以下是以图搜图的结果：</h6>
-            <!-- <div class='gallery-picture'>
-            	<div class='gallery-frame'>
-            		<img src="resource/潮流男装_男下装_牛仔裤/https@!!detail.vip.com!detail-2723308-504133697.html.jpg">
-            	</div>
-            </div> -->
-            <!-- <div class='gallery-picture'>
-            	<div class='gallery-frame'>
-            		<img src="resource/test.jpg">
-            	</div>
-            </div> -->
         </div>
     </div>
     
@@ -81,6 +71,7 @@
     <script src="flatUI/scripts/flat-ui.js"></script>
     <!-- 加载 粒子背景 -->
     <script src="js/jquery.particleground.js"></script>
+    <script src="js/encode.js"></script>
     <script>
     
         var url_head="http://localhost:8080/PLR/";
@@ -103,7 +94,7 @@
                 $('#picture').attr('src',src);
             }
             //选择图片之后进行相似图片获取
-            alert("GetSimilarPhoto");
+            //alert("GetSimilarPhoto");
     		$.ajax({
     			url:url_head+"plr_getsimilarphoto"+url_end,
     			type:'POST',  
@@ -114,25 +105,31 @@
 				dataType:"json",
     			success:function(result){
     				if(result.upload_success){
-    					alert("Upload Success,label is "+result.labelname);
+    					//alert("Upload Success,label is "+result.labelname);
     					//alert("root path is "+result.labelpath);
     					//alert("SimilarPhoto is "+result.similar_photo_list);
-                        var label = result.labelname.split("_");
-                        $("#label1").html(label[0]);
-                        $("#label2").html(label[1]);
-                        $("#label3").html(label[2]);
-                        for(var i=0;i<4;i++){
-							//alert(result.labelpath.split("/")[4]);
-                            $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+result.labelpath.split("/")[4]+"/"+result.similar_photo_list[i]+"'></div></div>");
-						}
-                        //图片获取完成后 显示动画效果
-                        $('.picture-label').css('display','inline');
-                        $('.gallery').css('display','block');
                         $(".picture-label").animate({opacity:"0.0"},500,function(){
-                            $(".gallery").animate({opacity:"0.0"},500);
-                        });
-                        $(".picture-label").animate({opacity:"1.0"},1000,function(){
-                            $(".gallery").animate({opacity:"1.0"},1200);
+                            $(".gallery").animate({opacity:"0.0"},500,function(){
+                            	var label = result.labelname.split("_");
+                                $("#label1").html(label[0]);
+                                $("#label2").html(label[1]);
+                                $("#label3").html(label[2]);
+                            	for(var i=0;i<4;i++){
+        							var folder_name=encode_name(result.labelpath.split("/")[4]);
+                                    if(i==0){
+                                    	$("#gallery").html("<h6>以下是以图搜图的结果：</h6><div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+folder_name+"/"+result.similar_photo_list[i]+"'></div></div>")
+                                    }else{
+                                    	$("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+folder_name+"/"+result.similar_photo_list[i]+"'></div></div>");
+                                    }
+        						}
+                                //图片获取完成后 显示动画效果
+                                $('.picture-label').css('display','inline');
+                                $('.gallery').css('display','block');
+                                
+                                $(".picture-label").animate({opacity:"1.0"},1000,function(){
+                                    $(".gallery").animate({opacity:"1.0"},1200);
+                                });
+                            });
                         });
     				}
     				else alert("Upload Fail");

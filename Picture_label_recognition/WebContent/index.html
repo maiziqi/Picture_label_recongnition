@@ -84,6 +84,7 @@
     <script src="flatUI/scripts/flat-ui.js"></script>
     <!-- 加载 粒子背景 -->
     <script src="js/jquery.particleground.js"></script>
+    <script src="js/encode.js"></script>
     <script>
         var url_head="http://localhost:8080/PLR/";
     	var url_end=".plr";
@@ -97,8 +98,8 @@
                 if ($(document).scrollTop() >= $(document).height() - $(window).height() - 1) {
                     //alert("loading!");
                     var label_extra = $("#label1").text()+'_'+$("#label2").text()+'_'+$("#label3").text();
-                    alert("GetPhoto");
-                    alert(label_extra);
+                    //alert("GetPhoto");
+                    //alert(label_extra);
                     $.ajax({
 				        url:url_head+"plr_getphoto"+url_end,
 				        dataType:"json",
@@ -113,7 +114,8 @@
     					        //alert("photo is "+result.photolist);
 						        for(var i=0;i<8;i++){
 							        //$("#body").append(result.photolist[i]+"</br>");
-                                    $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+result.labelpath+"/"+result.photolist[i]+"'></div></div>");
+							     	var folder_name=encode_name(result.labelpath.split("/")[4]);
+                                    $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></div></div>");
 						        }
 					        }
 				        },
@@ -139,7 +141,7 @@
                 //alert(src);
             }
             //选择图片之后进行ajax请求
-            alert("GetLabel");
+            //alert("GetLabel");
             $.ajax({  
 				url:url_head+"plr_getlabel"+url_end,  
 				type:'POST',  
@@ -150,15 +152,16 @@
 				dataType:"json",
 				success:function (result) {
 			    	if(result.upload_success){
-			    		alert("upload Success"+result.labelname);
+			    		//alert("upload Success"+result.labelname);
                         //切割标签名 并赋值
                         var label = result.labelname.split("_");
+                        $(".picture-label").animate({opacity:"0.0"},500,function(){
                         $("#label1").html(label[0]);
                         $("#label2").html(label[1]);
                         $("#label3").html(label[2]);
                         //获取标签后 获取与标签相关的8张图片
-                        alert("GetPhoto");
-                        alert(result.labelname);
+                        //alert("GetPhoto");
+                        //alert(result.labelname);
                         $.ajax({
 				            url:url_head+"plr_getphoto"+url_end,
 				            dataType:"json",
@@ -171,18 +174,27 @@
 					            else{
 						            //alert("root path is "+result.labelpath);
     					            //alert("photo is "+result.photolist);
-						            for(var i=0;i<8;i++){
-                                        $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+result.labelpath.split("/")[4]+"/"+result.photolist[i]+"'></div></div>"); 
-                                    }
-                                    //图片获取完成后 显示动画效果
-                                    $('.picture-label').css('display','inline');
-                                    $('.gallery').css('display','block');
-                                    $(".picture-label").animate({opacity:"0.0"},500,function(){
-                                        $(".gallery").animate({opacity:"0.0"},500);
-                                    });
-                                    $(".picture-label").animate({opacity:"1.0"},1000,function(){
-                                        $(".gallery").animate({opacity:"1.0"},1200);
-                                    });
+    					            
+                                        $(".gallery").animate({opacity:"0.0"},500,function(){
+                                        	for(var i=0;i<8;i++){
+                                        		//alert(result.labelpath.split("/")[4])
+        						            	var folder_name=encode_name(result.labelpath.split("/")[4]);
+        						            	//alert(folder_name);
+        						            	if(i==0){
+        								     		$("#gallery").html("<h6>以下是此标签下的其他商品：</h6><div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></div></div>")
+        								     	}else{
+        								     		$("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></div></div>"); 
+        								     	}
+                                            }
+                                            //图片获取完成后 显示动画效果
+                                            $('.picture-label').css('display','inline');
+                                            $('.gallery').css('display','block');
+                                            
+                                            $(".picture-label").animate({opacity:"1.0"},1000,function(){
+                                                $(".gallery").animate({opacity:"1.0"},1200);
+                                            });
+                                        });
+                                    
 					            }
 				            },
 				            error:function(XMLHttpRequest, textStatus, errorThrown) {
@@ -190,6 +202,7 @@
                                 alert("AJAX error!");
                             }
 			            });
+                        });
 			    	}
 			    	else alert("upload Fail");
 				},
