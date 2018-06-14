@@ -96,12 +96,14 @@
                 //滚动到底部开始发送ajax请求
                 if ($(document).scrollTop() >= $(document).height() - $(window).height() - 1) {
                     //alert("loading!");
+                    var label_extra = $("#label1").text + '_' + $("#label2").text + '_' + $("#label3").text;
+                    alert(label_extra);
                     alert("GetPhoto");
                     $.ajax({
 				        url:url_head+"plr_getphoto"+url_end,
 				        dataType:"json",
 				        async: false,
-				        data:{labelname:"book",photonum:8},
+				        data:{labelname:label_extra,photonum:8},
 				        success:function(result){
 					        if(result.isexist==0){
 						        alert("error:label not exist")
@@ -160,7 +162,7 @@
 				            url:url_head+"plr_getphoto"+url_end,
 				            dataType:"json",
 				            async: false,
-				            data:{labelname:"book",photonum:8},
+				            data:{labelname:result.labelname,photonum:8},
 				            success:function(result){
 					            if(result.isexist==0){
 						            alert("error:label not exist")
