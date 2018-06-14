@@ -96,9 +96,9 @@
                 //滚动到底部开始发送ajax请求
                 if ($(document).scrollTop() >= $(document).height() - $(window).height() - 1) {
                     //alert("loading!");
-                    var label_extra = $("#label1").text + '_' + $("#label2").text + '_' + $("#label3").text;
-                    alert(label_extra);
+                    var label_extra = $("#label1").text()+'_'+$("#label2").text()+'_'+$("#label3").text();
                     alert("GetPhoto");
+                    alert(label_extra);
                     $.ajax({
 				        url:url_head+"plr_getphoto"+url_end,
 				        dataType:"json",
@@ -109,8 +109,8 @@
 						        alert("error:label not exist")
 					        }
 					        else{
-						        alert("root path is "+result.labelpath);
-    					        alert("photo is "+result.photolist);
+						        //alert("root path is "+result.labelpath);
+    					        //alert("photo is "+result.photolist);
 						        for(var i=0;i<8;i++){
 							        //$("#body").append(result.photolist[i]+"</br>");
                                     $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+result.labelpath+"/"+result.photolist[i]+"'></div></div>");
@@ -158,6 +158,7 @@
                         $("#label3").html(label[2]);
                         //获取标签后 获取与标签相关的8张图片
                         alert("GetPhoto");
+                        alert(result.labelname);
                         $.ajax({
 				            url:url_head+"plr_getphoto"+url_end,
 				            dataType:"json",
@@ -168,10 +169,10 @@
 						            alert("error:label not exist")
 					            }
 					            else{
-						            alert("root path is "+result.labelpath);
-    					            alert("photo is "+result.photolist);
+						            //alert("root path is "+result.labelpath);
+    					            //alert("photo is "+result.photolist);
 						            for(var i=0;i<8;i++){
-                                        $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+result.labelpath+"/"+result.photolist[i]+"'></div></div>"); 
+                                        $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+result.labelpath.split("/")[4]+"/"+result.photolist[i]+"'></div></div>"); 
                                     }
                                     //图片获取完成后 显示动画效果
                                     $('.picture-label').css('display','inline');

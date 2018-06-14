@@ -53,11 +53,21 @@
                 </div>
             </div>
             <div class="picture-label">
-                <label id="label1">品质女装</label><label id="label2">裙装套装</label><label id="label3">包臀裙</label>
+                <label id="label1"></label><label id="label2"></label><label id="label3"></label>
             </div>
         </div>
         <div class="gallery" id="gallery">
             <h6>以下是以图搜图的结果：</h6>
+            <!-- <div class='gallery-picture'>
+            	<div class='gallery-frame'>
+            		<img src="resource/潮流男装_男下装_牛仔裤/https@!!detail.vip.com!detail-2723308-504133697.html.jpg">
+            	</div>
+            </div> -->
+            <!-- <div class='gallery-picture'>
+            	<div class='gallery-frame'>
+            		<img src="resource/test.jpg">
+            	</div>
+            </div> -->
         </div>
     </div>
     
@@ -72,6 +82,7 @@
     <!-- 加载 粒子背景 -->
     <script src="js/jquery.particleground.js"></script>
     <script>
+    
         var url_head="http://localhost:8080/PLR/";
     	var url_end=".plr";
         $(document).ready(function() {
@@ -104,14 +115,15 @@
     			success:function(result){
     				if(result.upload_success){
     					alert("Upload Success,label is "+result.labelname);
-    					alert("root path is "+result.labelpath);
-    					alert("SimilarPhoto is "+result.similar_photo_list);
+    					//alert("root path is "+result.labelpath);
+    					//alert("SimilarPhoto is "+result.similar_photo_list);
                         var label = result.labelname.split("_");
                         $("#label1").html(label[0]);
                         $("#label2").html(label[1]);
                         $("#label3").html(label[2]);
                         for(var i=0;i<4;i++){
-                            $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='"+result.labelpath+"/"+result.photolist[i]+"'></div></div>");
+							//alert(result.labelpath.split("/")[4]);
+                            $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+result.labelpath.split("/")[4]+"/"+result.similar_photo_list[i]+"'></div></div>");
 						}
                         //图片获取完成后 显示动画效果
                         $('.picture-label').css('display','inline');
