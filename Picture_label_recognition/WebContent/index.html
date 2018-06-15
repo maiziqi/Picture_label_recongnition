@@ -115,7 +115,7 @@
 						        for(var i=0;i<8;i++){
 							        //$("#body").append(result.photolist[i]+"</br>");
 							     	var folder_name=encode_name(result.labelpath.split("/")[4]);
-                                    $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame' onclick='$(\"#gallery-website"+i+"\")[0].click();'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'><a class='hidden' id='gallery-website"+i+"' href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'>click</a></div></div>");
+                                    $("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><a href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></a></div></div>");
 						        }
 					        }
 				        },
@@ -181,9 +181,9 @@
         						            	var folder_name=encode_name(result.labelpath.split("/")[4]);
         						            	//alert(folder_name);
         						            	if(i==0){
-        								     		$("#gallery").html("<h6>以下是此标签下的其他商品：</h6><div class='gallery-picture'><div class='gallery-frame' onclick='$(\"#gallery-website"+i+"\")[0].click();'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'><a class='hidden' id='gallery-website"+i+"' href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'>click</a></div></div>")
+        								     		$("#gallery").html("<h6>以下是此标签下的其他商品：</h6><div class='gallery-picture'><div class='gallery-frame'><a href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></a></div></div>")
         								     	}else{
-        								     		$("#gallery").append("<div class='gallery-picture'><div class='gallery-frame' onclick='$(\"#gallery-website"+i+"\")[0].click();'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'><a class='hidden' id='gallery-website"+i+"' href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'>click</a></div></div>"); 
+        								     		$("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><a href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></a></div></div>"); 
         								     	}
                                             }
                                             //图片获取完成后 显示动画效果
