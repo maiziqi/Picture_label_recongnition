@@ -21,10 +21,11 @@ public class PhotonameServiceImpl implements IPhotonameService {
 
 	@Override
 	public List<String> search_photoname(String table_name, int photo_num) throws Exception {				//给定表名和图片数量N，随机返回N张该表中的图片
-		List<String> photo_list=new ArrayList<String>();
+		/*List<String> photo_list=new ArrayList<String>();
 		for(int i=0;i<photo_num;i++) {
 			photo_list.add(photonamedao.search_photo(table_name));
-		}
+		}*/
+		List<String> photo_list=photonamedao.search_photo(table_name, photo_num*2);
 		return photo_list;
 	}
 
