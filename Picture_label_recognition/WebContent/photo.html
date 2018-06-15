@@ -117,15 +117,14 @@
                             	for(var i=0;i<4;i++){
         							var folder_name=encode_name(result.labelpath.split("/")[4]);
                                     if(i==0){
-                                    	$("#gallery").html("<h6>以下是以图搜图的结果：</h6><div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+folder_name+"/"+result.similar_photo_list[i]+"'></div></div>")
+                                    	$("#gallery").html("<h6>以下是以图搜图的结果：</h6><div class='gallery-picture'><div class='gallery-frame' onclick='$(\"#gallery-website"+i+"\")[0].click();'><img src='resource/"+folder_name+"/"+result.similar_photo_list[i]+"'><a class='hidden' id='gallery-website"+i+"' href='"+result.similar_photo_list[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'>click</a></div></div>")
                                     }else{
-                                    	$("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><img src='resource/"+folder_name+"/"+result.similar_photo_list[i]+"'></div></div>");
+                                    	$("#gallery").append("<div class='gallery-picture'><div class='gallery-frame' onclick='$(\"#gallery-website"+i+"\")[0].click();'><img src='resource/"+folder_name+"/"+result.similar_photo_list[i]+"'><a class='hidden' id='gallery-website"+i+"' href='"+result.similar_photo_list[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'>click</a></div></div>");
                                     }
         						}
                                 //图片获取完成后 显示动画效果
                                 $('.picture-label').css('display','inline');
                                 $('.gallery').css('display','block');
-                                
                                 $(".picture-label").animate({opacity:"1.0"},1000,function(){
                                     $(".gallery").animate({opacity:"1.0"},1200);
                                 });
