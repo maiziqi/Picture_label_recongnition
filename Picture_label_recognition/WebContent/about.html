@@ -97,6 +97,9 @@
     <script src="js/jquery.particleground.js"></script>
     <script>
         $(document).ready(function() {
+            $('.main-title').animate({opacity:"1.0"},500,function(){
+                $('.about').animate({opacity:"1.0"},500);
+            });
             $('.banner').particleground({
                 dotColor: '#5cbdaa',
                 lineColor: '#5cbdaa'

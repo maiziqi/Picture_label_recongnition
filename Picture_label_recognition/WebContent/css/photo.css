@@ -15,6 +15,7 @@ body {
     display: block;
     position: relative;
     margin-top: 40px;
+    opacity: 0;
   }
   
   .picture {
@@ -36,6 +37,7 @@ body {
     margin: 50px 30px 0 50px;
     background-color: #edeff1;
     border-radius: 10px;
+    opacity: 0;
   }
   
   .picture-show:hover .cls-1 {

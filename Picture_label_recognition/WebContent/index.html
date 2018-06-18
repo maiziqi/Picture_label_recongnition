@@ -86,9 +86,12 @@
     <script src="js/jquery.particleground.js"></script>
     <script src="js/encode.js"></script>
     <script>
-        var url_head="http://125.216.245.176:8080/PLR/";
+        var url_head="http://193.112.45.142:8080/PLR/";
     	var url_end=".plr";
         $(document).ready(function() {
+            $('.main-title').animate({opacity:"1.0"},500,function(){
+                $('.picture-show').animate({opacity:"1.0"},500);
+            });
             $('.banner').particleground({
                 dotColor: '#5cbdaa',
                 lineColor: '#5cbdaa'
