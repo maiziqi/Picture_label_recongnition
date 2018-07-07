@@ -134,37 +134,33 @@
             $('#photo_id').click();
         });
         $('#photo_id').change(function(){
-            //alert($('#photo_id').val());
+            //动态修改前端的加号为当前选择图片
             var oFReader = new FileReader();
             var file = document.getElementById('photo_id').files[0];
             oFReader.readAsDataURL(file);
             oFReader.onloadend = function(oFRevent){
                 var src = oFRevent.target.result;
+                //修改img标记的src属性
                 $('#picture').attr('src',src);
-                //alert(src);
             }
             //选择图片之后进行ajax请求
-            //alert("GetLabel");
             $.ajax({  
 				url:url_head+"plr_getlabel"+url_end,  
 				type:'POST',  
-				cache:false,  			//cache设置为false，上传文件不需要缓存。
+				cache:false,  			
 				data:new FormData($("#photo_form")[0]),  
-				processData:false,  	//processData设置为false。因为data值是FormData对象，不需要对数据做处理。 -->
-				contentType:false,  	//contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。 -->
+				processData:false,  	
+				contentType:false,  	
 				dataType:"json",
 				success:function (result) {
 			    	if(result.upload_success){
-			    		//alert("upload Success"+result.labelname);
-                        //切割标签名 并赋值
+                        //切割获取的标签名并对页面中的标签进行赋值
                         var label = result.labelname.split("_");
                         $(".picture-label").animate({opacity:"0.0"},500,function(){
                         $("#label1").html(label[0]);
                         $("#label2").html(label[1]);
                         $("#label3").html(label[2]);
-                        //获取标签后 获取与标签相关的8张图片
-                        //alert("GetPhoto");
-                        //alert(result.labelname);
+                        //获取标签后 再次获取与标签相关的8张图片
                         $.ajax({
 				            url:url_head+"plr_getphoto"+url_end,
 				            dataType:"json",
@@ -175,34 +171,27 @@
 						            alert("error:label not exist")
 					            }
 					            else{
-						            //alert("root path is "+result.labelpath);
-    					            //alert("photo is "+result.photolist);
-    					            
-                                        $(".gallery").animate({opacity:"0.0"},500,function(){
-                                        	for(var i=0;i<8;i++){
-                                        		//alert(result.labelpath.split("/")[4])
-        						            	var folder_name=encode_name(result.labelpath.split("/")[4]);
-        						            	//alert(folder_name);
-        						            	if(i==0){
-        								     		$("#gallery").html("<h6>以下是此标签下的其他商品：</h6><div class='gallery-picture'><div class='gallery-frame'><a href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></a></div></div>")
-        								     	}else{
-        								     		$("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><a href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></a></div></div>"); 
-        								     	}
-                                            }
-                                            //图片获取完成后 显示动画效果
-                                            $('.picture-label').css('display','inline');
-                                            $('.gallery').css('display','block');
-                                            
-                                            $(".picture-label").animate({opacity:"1.0"},1000,function(){
-                                                $(".gallery").animate({opacity:"1.0"},1200);
-                                            });
+                                    //为方便图片加载，在加载前先将原来图片隐藏
+                                    $(".gallery").animate({opacity:"0.0"},500,function(){
+                                        for(var i=0;i<8;i++){
+        						            var folder_name=encode_name(result.labelpath.split("/")[4]);
+        						            if(i==0){
+        								     	$("#gallery").html("<h6>以下是此标签下的其他商品：</h6><div class='gallery-picture'><div class='gallery-frame'><a href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></a></div></div>")
+        								    }else{
+        								     	$("#gallery").append("<div class='gallery-picture'><div class='gallery-frame'><a href='"+result.photolist[i].replace('@',':').replace(/!/g,'/').replace('.jpg','')+"'><img src='resource/"+folder_name+"/"+result.photolist[i]+"'></a></div></div>"); 
+        								    }
+                                        }
+                                        //图片获取完成后，显示动画效果
+                                        $('.picture-label').css('display','inline');
+                                        $('.gallery').css('display','block');
+                                        $(".picture-label").animate({opacity:"1.0"},1000,function(){
+                                        $(".gallery").animate({opacity:"1.0"},1200);
                                         });
-                                    
+                                    });
 					            }
 				            },
 				            error:function(XMLHttpRequest, textStatus, errorThrown) {
-                                //alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
-                                alert("AJAX error!");
+                                alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
                             }
 			            });
                         });
@@ -210,7 +199,7 @@
 			    	else alert("upload Fail");
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown) {
-                    //alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
+                    alert(XMLHttpRequest.status+" "+XMLHttpRequest.readyState);
 					alert("AJAX error!");
 				}
 			});
